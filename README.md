@@ -16,7 +16,7 @@ The rapid on-site evaluation (ROSE) technique can significantly accelerate the d
 
 Overview of our proposed approach MIL-SI, composed of two steps MIL step and CLS step. In the data processing as illustrated in (a), the images will be transformed into patch-es, and the patch annotation label will be calculated based on the corresponding masks. In the MIL step, the bags of patches within a batch will be shuffled while the bags of image patches will remain unchanged in the CLS step. The bags are then composed into images with the soft-label aggregated from the patch-level label. In the 2-step training process in (b), after the feature extraction of the backbone, the patch tokens will be used to regress the bag-level soft-label in the MIL head. In the CLS step, an additional CLS head will be used to predict the categories of the input images based on the class token.
 
-# Results and CAM
+
 # Results on the test set
 
 ## MIL-SI
@@ -89,6 +89,10 @@ Overview of our proposed approach MIL-SI, composed of two steps MIL step and CLS
 | ViT_384_401_PT_lf05_b4_p32_MIL_25_ROSE | MIL ViT    | CLS+2.5CLS_MIL+2.5MIL | 384, P32 | 93.50   | 92.35         | 88.70      | 88.70           | 96.07           | 94.08   | 90.49        |
 | ViT_384_401_PT_lf05_b4_p32_MIL_30_ROSE | MIL ViT    | CLS+3.0CLS_MIL+3.0MIL | 384, P32 | 93.60   | 91.40         | 90.11      | 90.11           | 95.47           | 94.75   | 90.75        |
 
+# Attention visuallization by grad-CAM
+
 <img width="1001" alt="CAM results" src="https://user-images.githubusercontent.com/50575108/159670793-d0970b24-70ab-46a4-b683-602cde66c8a6.png">
+
+More samples can be viewed in the folder of Archive
 
 
