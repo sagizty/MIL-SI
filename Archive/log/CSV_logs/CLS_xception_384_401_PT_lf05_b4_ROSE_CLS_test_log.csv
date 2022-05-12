@@ -1,0 +1,3 @@
+Phase:, , , , , , , , Test
+Epoch:, Acc, Negative_Precision, Negative_Recall, Negative_Sensitivity, Negative_Specificity, Negative_NPV, Negative_F1_score, Positive_Precision, Positive_Recall, Positive_Sensitivity, Positive_Specificity, Positive_NPV, Positive_F1_score, 
+test, 90.94488188976378, 90.71428571428571, 95.9214501510574, 95.9214501510574, 81.63841807909604, 91.45569620253164, 93.24522760646107, 91.45569620253164, 81.63841807909604, 81.63841807909604, 95.9214501510574, 90.71428571428571, 86.26865671641791, 
