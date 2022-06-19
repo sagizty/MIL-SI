@@ -1,6 +1,6 @@
 """
 get model func for get conterparts models
-script  ver： Feb 19th   16:30
+script  ver： Jun 19th   12:30
 """
 import os
 import sys
@@ -19,20 +19,67 @@ def get_model(num_classes=1000, edge_size=224, model_idx=None, drop_rate=0.0, at
     :param num_classes: classification required number of your dataset
     :param edge_size: the input edge size of the dataloder
     :param model_idx: the model we are going to use. by the format of Model_size_other_info
-
     :param drop_rate: The dropout layer's probility of proposed models
     :param attn_drop_rate: The dropout layer(right after the MHSA block or MHGA block)'s probility of proposed models
     :param drop_path_rate: The probility of stochastic depth
-
     :param pretrained_backbone: The backbone CNN is initiate randomly or by its official Pretrained models
-
     :param use_cls_token: To use the class token
     :param use_pos_embedding: To use the positional enbedding
     :param use_att_module: To use which attention module in the FGD Focus block
-
     :return: prepared model
     """
-    if model_idx[0:3] == 'ViT':
+    if model_idx[0:5] == 'ViT_h':
+        # Transfer learning for ViT
+        import timm
+        from pprint import pprint
+        model_names = timm.list_models('*vit*')
+        pprint(model_names)
+        if edge_size == 224:
+            model = timm.create_model('vit_huge_patch14_224_in21k', pretrained=pretrained_backbone,
+                                      num_classes=num_classes)
+        else:
+            print('not a avaliable image size with', model_idx)
+
+    elif model_idx[0:5] == 'ViT_l':
+        # Transfer learning for ViT
+        import timm
+        from pprint import pprint
+        model_names = timm.list_models('*vit*')
+        pprint(model_names)
+        if edge_size == 224:
+            model = timm.create_model('vit_large_patch16_224', pretrained=pretrained_backbone, num_classes=num_classes)
+        elif edge_size == 384:
+            model = timm.create_model('vit_large_patch16_384', pretrained=pretrained_backbone, num_classes=num_classes)
+        else:
+            print('not a avaliable image size with', model_idx)
+
+    elif model_idx[0:5] == 'ViT_s':
+        # Transfer learning for ViT
+        import timm
+        from pprint import pprint
+        model_names = timm.list_models('*vit*')
+        pprint(model_names)
+        if edge_size == 224:
+            model = timm.create_model('vit_small_patch16_224', pretrained=pretrained_backbone, num_classes=num_classes)
+        elif edge_size == 384:
+            model = timm.create_model('vit_small_patch16_384', pretrained=pretrained_backbone, num_classes=num_classes)
+        else:
+            print('not a avaliable image size with', model_idx)
+
+    elif model_idx[0:5] == 'ViT_t':
+        # Transfer learning for ViT
+        import timm
+        from pprint import pprint
+        model_names = timm.list_models('*vit*')
+        pprint(model_names)
+        if edge_size == 224:
+            model = timm.create_model('vit_tiny_patch16_224', pretrained=pretrained_backbone, num_classes=num_classes)
+        elif edge_size == 384:
+            model = timm.create_model('vit_tiny_patch16_384', pretrained=pretrained_backbone, num_classes=num_classes)
+        else:
+            print('not a avaliable image size with', model_idx)
+
+    elif model_idx[0:5] == 'ViT_b' or model_idx[0:3] == 'ViT':  # vit_base
         # Transfer learning for ViT
         import timm
         from pprint import pprint
@@ -43,7 +90,7 @@ def get_model(num_classes=1000, edge_size=224, model_idx=None, drop_rate=0.0, at
         elif edge_size == 384:
             model = timm.create_model('vit_base_patch16_384', pretrained=pretrained_backbone, num_classes=num_classes)
         else:
-            pass
+            print('not a avaliable image size with', model_idx)
 
     elif model_idx[0:3] == 'vgg':
         # Transfer learning for vgg16_bn
@@ -181,4 +228,4 @@ def get_model(num_classes=1000, edge_size=224, model_idx=None, drop_rate=0.0, at
         return -1
     else:
         print('model is ready now!')
-        return model
+        return 
