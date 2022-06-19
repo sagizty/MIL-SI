@@ -171,11 +171,10 @@ class PatchEmbed(nn.Module):  # PatchEmbed from timm
         return x
 
 
-class VisionTransformer(nn.Module):  # From timm to review the ViT and ViT_resn5
+class VisionTransformer(nn.Module):  # From timm to review the ViT
     """
     MIL Alteration:
     change output to all tokens
-    delete pos_emb
 
 
     Vision Transformer
