@@ -1,5 +1,5 @@
 """
-MIL Testing   Script  ver： Apr 23th 22:00
+MIL Testing   Script  ver： Jun 5th 21:00
 """
 from __future__ import print_function, division
 import json
@@ -440,8 +440,8 @@ def main(args):
     fixed_patch_distributer = non_shuffle_distributer(edge_size, patch_size, device=device)
 
     # model
-    backbone = build_backbone(model_idx, edge_size, pretrained_backbone=False)
-    model = MIL_Transformer_model(backbone, num_classes=len(class_names))
+    model = build_MIL_model(model_idx, edge_size, pretrained_backbone=False, num_classes=len(class_names))
+
     # get Pre_Trained model if required
     try:
         model.load_state_dict(torch.load(save_model_path))
