@@ -1,5 +1,5 @@
 """
-dual augmentation on both images and their masks   Script  ver： Apr 29th 14:00
+dual augmentation on both images and their masks   Script  ver： May 12th 23:20
 
 
 """
@@ -208,7 +208,7 @@ def Four_step_dual_augmentation(data_augmentation_mode=0, edge_size=384):
             transforms.ToTensor(),  # hwc -> chw tensor
         ])
 
-    elif data_augmentation_mode == 3:  # TODO 对于方形输入
+    elif data_augmentation_mode == 3:  # for the squre input: just resize
         # apply the on-time synchornized transform on image and mask togather
         Dual_transform = DualCompose([
             # Dual_Rotate(possibility=0.8, range=180),
@@ -226,7 +226,6 @@ def Four_step_dual_augmentation(data_augmentation_mode=0, edge_size=384):
 
         # lastly, the synchornized separate transform
         transform = transforms.Compose([
-            transforms.CenterCrop(360),  # center area for classification
             transforms.Resize(edge_size),
             transforms.ToTensor(),  # hwc -> chw tensor
         ])

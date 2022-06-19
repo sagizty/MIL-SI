@@ -1,5 +1,5 @@
 """
-data_augmentation Script  ver： Apr 29th 14:00
+data_augmentation    Script  ver： May 12th 23:20
 
 dataset structure: ImageNet
 image folder dataset is used.
@@ -63,20 +63,17 @@ def data_augmentation(data_augmentation_mode=0, edge_size=384):
             ]),
         }
 
-    elif data_augmentation_mode == 3:  # TODO 对于方形输入
+    elif data_augmentation_mode == 3:  # for the squre input: just resize
         data_transforms = {
             'train': transforms.Compose([
-                # transforms.RandomRotation((0, 180)),
                 transforms.RandomHorizontalFlip(),
                 transforms.RandomVerticalFlip(),
-                # transforms.CenterCrop(360),  # center area for classification
                 transforms.Resize(edge_size),
                 transforms.ColorJitter(brightness=0.15, contrast=0.3, saturation=0.3, hue=0.06),
                 # HSL shift operation
                 transforms.ToTensor()
             ]),
             'val': transforms.Compose([
-                transforms.CenterCrop(360),
                 transforms.Resize(edge_size),
                 transforms.ToTensor()
             ]),

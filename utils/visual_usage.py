@@ -1,5 +1,5 @@
 """
-attention visulization    Script  ver： Apr 22th 00:40
+Attention Visulization    Script  ver： Jun 6th 15:10
 use rgb format input
 """
 
@@ -46,6 +46,15 @@ def cls_token_s12_transform(tensor, height=12, width=12):  # based on pytorch_gr
 
 
 def cls_token_s14_transform(tensor, height=14, width=14):  # based on pytorch_grad_cam
+    result = tensor[:, 1:, :].reshape(tensor.size(0), height, width, tensor.size(2))
+
+    # Bring the channels to the first dimension,
+    # like in CNNs.
+    result = result.transpose(2, 3).transpose(1, 2)
+    return result
+
+
+def cls_token_s16_transform(tensor, height=16, width=16):  # based on pytorch_grad_cam
     result = tensor[:, 1:, :].reshape(tensor.size(0), height, width, tensor.size(2))
 
     # Bring the channels to the first dimension,
@@ -107,19 +116,30 @@ def choose_cam_by_model(model, model_idx, edge_size, use_cuda=True, model_type='
     # Otherwise, targets the requested category.
 
     if model_idx[0:3] == 'ViT' or model_idx[0:4] == 'deit':
+        # We should chose any layer before the final attention block,
+        # check: https://github.com/jacobgil/pytorch-grad-cam/blob/master/tutorials/vision_transformers.md
         if model_type == 'CLS':
             target_layers = [model.blocks[-1].norm1]
-        else:
+        else:  # MIL-SI
             target_layers = [model.backbone.blocks[-1].norm1]
-        if edge_size == 384:
-            grad_cam = GradCAM(model, target_layers=target_layers, use_cuda=use_cuda,
-                               reshape_transform=cls_token_s24_transform)
-        elif edge_size == 224:
-            grad_cam = GradCAM(model, target_layers=target_layers, use_cuda=use_cuda,
-                               reshape_transform=cls_token_s14_transform)
+
+        if model_idx[0:5] == 'ViT_h':
+            if edge_size == 224:
+                grad_cam = GradCAM(model, target_layers=target_layers, use_cuda=use_cuda,
+                                   reshape_transform=cls_token_s16_transform)
+            else:
+                print('ERRO in ViT_huge edge size')
+                return -1
         else:
-            print('ERRO in ViT/DeiT edge size')
-            return -1
+            if edge_size == 384:
+                grad_cam = GradCAM(model, target_layers=target_layers, use_cuda=use_cuda,
+                                   reshape_transform=cls_token_s24_transform)
+            elif edge_size == 224:
+                grad_cam = GradCAM(model, target_layers=target_layers, use_cuda=use_cuda,
+                                   reshape_transform=cls_token_s14_transform)
+            else:
+                print('ERRO in ViT/DeiT edge size')
+                return -1
 
     elif model_idx[0:3] == 'vgg':
         if model_type == 'CLS':
@@ -148,6 +168,7 @@ def choose_cam_by_model(model, model_idx, edge_size, use_cuda=True, model_type='
             target_layers = [model.layer4[-1]]
         else:
             target_layers = [model.backbone.layer4[-1]]
+
         grad_cam = GradCAM(model, target_layers=target_layers, use_cuda=use_cuda, reshape_transform=None)  # CNN: None
 
     elif model_idx[0:7] == 'Hybrid1' and edge_size == 384:
@@ -407,6 +428,31 @@ def unpatchify(pred, patch_size=16):
     pred = torch.einsum('nhwpqc->nchpwq', pred)
     # use reshape to compose patch [B, C, h_p, patch_size, w_p, patch_size] -> [B, C, H, W]
     imgs = pred.reshape(shape=(pred.shape[0], 3, h * patch_size, h * patch_size))
+    return imgs
+
+
+def patchify(imgs, patch_size=16):
+    """
+    Break image to patch tokens
+
+    input:
+    imgs: (B, 3, H, W)
+
+    output:
+    x: (B, num_patches, patch_size**2 *3) AKA [B, num_patches, flatten_dim]
+    """
+    # assert H == W and image shape is dividedable by patch
+    assert imgs.shape[2] == imgs.shape[3] and imgs.shape[2] % patch_size == 0
+    # patch num in rol or column
+    h = w = imgs.shape[2] // patch_size
+
+    # use reshape to split patch [B, C, H, W] -> [B, C, h_p, patch_size, w_p, patch_size]
+    imgs = imgs.reshape(shape=(imgs.shape[0], 3, h, patch_size, w, patch_size))
+
+    # ReArrange dimensions [B, C, h_p, patch_size, w_p, patch_size] -> [B, h_p, w_p, patch_size, patch_size, C]
+    imgs = torch.einsum('nchpwq->nhwpqc', imgs)
+    # ReArrange dimensions [B, h_p, w_p, patch_size, patch_size, C] -> [B, num_patches, flatten_dim]
+    imgs = imgs.reshape(shape=(imgs.shape[0], h * w, patch_size ** 2 * 3))
     return imgs
 
 
