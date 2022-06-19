@@ -1,5 +1,5 @@
 """
-MIL Training   Script  ver： Apr 23th 22:00
+MIL Training   Script  ver： Jun 5th 21:00
 """
 from __future__ import print_function, division
 
@@ -15,7 +15,7 @@ from torchsummary import summary
 
 from MIL.MIL_model import *
 from MIL.MIL_structure import *
-from utils.tools import setup_seed, del_file
+from utils.tools import setup_seed, del_file, FixStateDict
 from utils.visual_usage import *
 
 
@@ -537,11 +537,18 @@ def main(args):
     fixed_patch_distributer = non_shuffle_distributer(edge_size, patch_size, device=device)
 
     # model
-    backbone = build_backbone(model_idx, edge_size, pretrained_backbone)
-    model = MIL_Transformer_model(backbone, num_classes=len(class_names))
+    model = build_MIL_model(model_idx, edge_size, pretrained_backbone, num_classes=len(class_names))
+
     # get Pre_Trained model if required
     if Pre_Trained_model_path is not None:
-        model.load_state_dict(torch.load(Pre_Trained_model_path), False)
+        if os.path.exists(Pre_Trained_model_path):
+            state_dict = FixStateDict(torch.load(Pre_Trained_model_path), remove_key_head='head')
+            model.load_state_dict(state_dict, False)
+            print('pretrain model loaded')
+        else:
+            print('Pre_Trained_model_path:' + Pre_Trained_model_path, ' is NOT avaliable!!!!\n')
+            raise  # print('we ignore this with a new start up')
+
     # put on multi-gpu
     if gpu_use == -1:
         model = nn.DataParallel(model)
