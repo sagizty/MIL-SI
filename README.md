@@ -93,6 +93,18 @@ Overview of our proposed approach MIL-SI, composed of two steps MIL step and CLS
 
 <img width="1001" alt="CAM results" src="https://user-images.githubusercontent.com/50575108/159670793-d0970b24-70ab-46a4-b683-602cde66c8a6.png">
 
+# CAM on shuffled instances
+<img width="607" alt="CAM on shuffled instances" src="https://user-images.githubusercontent.com/50575108/183827312-9f25284a-06da-4cd9-959b-1aac6d6c787e.png">
+
+# bad caces
+<img width="593" alt="bad caces" src="https://user-images.githubusercontent.com/50575108/183827366-6207da21-2073-4763-b853-07e679b31271.png">
+
+# CAM of different patch settings
+<img width="922" alt="CAM of different patch settings" src="https://user-images.githubusercontent.com/50575108/183827405-d4d7260a-02ef-4da8-b0dc-cb3bc8bbb2f8.png">
+
+# CAM of different settings on shuffled samples
+<img width="631" alt="CAM of different settings on shuffled samples" src="https://user-images.githubusercontent.com/50575108/183827453-9d2f2e50-bb3e-4a10-bea5-74b0f3acb761.png">
+
 More samples can be viewed in the folder of Archive
 
 
