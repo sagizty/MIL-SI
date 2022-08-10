@@ -1,4 +1,4 @@
-# MIL-SI
+# SI-ViT
 Pancreatic Cancer ROSE Image Classification Based on Multiple Instance Learning with Shuffle Instances
 
 * Results can be view in Archive folder 
