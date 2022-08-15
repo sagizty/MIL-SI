@@ -1,6 +1,6 @@
 """
 get model func for get conterparts models
-script  ver： Jun 19th   12:30
+script  ver： Aug 15th   14:30
 """
 import os
 import sys
@@ -228,4 +228,4 @@ def get_model(num_classes=1000, edge_size=224, model_idx=None, drop_rate=0.0, at
         return -1
     else:
         print('model is ready now!')
-        return 
+        return model
