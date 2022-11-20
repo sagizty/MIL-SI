@@ -1,5 +1,5 @@
 """
-Attention Visulization    Script  ver： Jun 6th 15:10
+Attention Visulization    Script  ver： Nov 3rd 19:30
 use rgb format input
 """
 
@@ -226,7 +226,7 @@ def choose_cam_by_model(model, model_idx, edge_size, use_cuda=True, model_type='
     return grad_cam
 
 
-def check_SAA(inputs, labels, model, model_idx, edge_size, class_names, model_type='CLS', num_images=2, pic_name='test',
+def check_SAA(inputs, labels, model, model_idx, edge_size, class_names, model_type='CLS', num_images=-1, pic_name='test',
               draw_path='../imaging_results', check_all=True, unknown_GT=False, writer=None):
     """
     check num_images of images and visual the models's attention area
@@ -272,10 +272,13 @@ def check_SAA(inputs, labels, model, model_idx, edge_size, class_names, model_ty
 
     grad_cam = choose_cam_by_model(model, model_idx, edge_size, model_type=model_type)  # choose model
 
+    if num_images == -1:  # auto detect a batch
+        num_images = int(inputs.shape[0])
+
     images_so_far = 0
     plt.figure()
 
-    for j in range(inputs.size()[0]):
+    for j in range(num_images):
 
         for type in checking_type:
             images_so_far += 1
@@ -342,7 +345,7 @@ def check_SAA(inputs, labels, model, model_idx, edge_size, class_names, model_ty
     model.train(mode=was_training)
 
 
-def visualize_check(inputs, labels, model, class_names, num_images=3, pic_name='test',
+def visualize_check(inputs, labels, model, class_names, num_images=-1, pic_name='test',
                     draw_path='/home/ZTY/imaging_results', writer=None):  # visual check
     """
     check num_images of images and visual them
@@ -372,15 +375,35 @@ def visualize_check(inputs, labels, model, class_names, num_images=3, pic_name='
         outputs = model(inputs)
         _, preds = torch.max(outputs, 1)
 
-        for j in range(inputs.size()[0]):  # each batch input idx: j
+        if num_images == -1:  # auto detect a batch
+            num_images = int(inputs.shape[0])
+
+        if num_images % 5 == 0:
+            line_imgs_num = 5
+        elif num_images % 4 == 0:
+            line_imgs_num = 4
+        elif num_images % 3 == 0:
+            line_imgs_num = 3
+        elif num_images % 2 == 0:
+            line_imgs_num = 2
+        else:
+            line_imgs_num = int(num_images)
+
+        rows_imgs_num = int(num_images // line_imgs_num)
+        num_images = line_imgs_num * rows_imgs_num
+
+        for j in range(num_images):  # each batch input idx: j
+
             images_so_far += 1
-            ax = plt.subplot(num_images // 3, 3, images_so_far)
+
+            ax = plt.subplot(rows_imgs_num, line_imgs_num, images_so_far)
+
             ax.axis('off')
             ax.set_title('Pred: {} True: {}'.format(class_names[preds[j]], class_names[int(labels[j])]))
             imshow(inputs.cpu().data[j])
 
             if images_so_far == num_images:
-                picpath = draw_path + '/' + pic_name + '.jpg'
+                picpath = os.path.join(draw_path, pic_name + '.jpg')
                 if not os.path.exists(draw_path):
                     os.makedirs(draw_path)
 
