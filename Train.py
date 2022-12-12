@@ -30,7 +30,7 @@ from utils.visual_usage import *
 from utils.data_augmentation import *
 from utils.counterpart_augmentations import *
 from utils.tools import setup_seed, del_file, FixStateDict
-from MIL.getmodel import get_model
+from Models.getmodel import get_model
 
 
 # define SoftlabelCrossEntropy loss for soft-label based augmentations
