@@ -11,7 +11,7 @@ import time
 import torchvision
 from tensorboardX import SummaryWriter
 
-from MIL.getmodel import get_model
+from Models.getmodel import get_model
 
 from utils.data_augmentation import *
 from utils.tools import del_file
