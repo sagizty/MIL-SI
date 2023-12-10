@@ -1,5 +1,9 @@
 # SI-ViT
 Pancreatic Cancer ROSE Image Classification Based on Multiple Instance Learning with Shuffle Instances
+ 
+Tianyi Zhang, Youdan Feng, Yu Zhao, Yunlu Feng, Yanli Lei, Nan Ying, Fan Song, Zhiling Yan, Yufang He, Aiming Yang, and Guanglei Zhang, “Shuffle Instances-based Vision Transformer for Pancreatic Cancer ROSE Image Classification” Computer Methods and Programs in Biomedicine, 244, p. 107969. (SCI, Q1, IF=6.1)
+
+https://authors.elsevier.com/a/1iDRxcV4LHEkF
 
 * Results can be view in Archive folder 
 
@@ -7,7 +11,14 @@ Pancreatic Cancer ROSE Image Classification Based on Multiple Instance Learning 
 
 # Abstract
 
-The rapid on-site evaluation (ROSE) technique can significantly accelerate the diagnostic workflow of pancreatic cancer by immediately analyzing the fast-stained cytopathological images with on-site pathologists. Computer-aided diagnosis (CAD) using the deep learning method has the potential to solve the problem of insufficient pathology staffing. However, the cancerous patterns of ROSE images vary greatly between different samples, making the CAD task extremely challenging. Besides, due to different staining qualities and various types of acquisition devices, the ROSE images also have complicated perturbations in terms of color distribution, brightness, and contrast. To address these challenges, we proposed a novel multiple instance learning (MIL) approach using shuffle patches as the instances, which adopts the patch-based learning strategy of Vision Transformers. With the shuffle instances of grouped cell patches and their bag-level soft labels, the approach utilizes a MIL head to make the model focus on the features from the pancreatic cancer cells, rather than that from various perturbations in ROSE images. Simultaneously, combined with a classification head, the model can effectively identify the general distributive patterns across different instances. The results demonstrate the significant improvements in the classification accuracy with more accurate attention regions, indicating that the diverse patterns of ROSE images are effectively extracted and the complicated perturbations of ROSE images are greatly eliminated. It also suggests that the MIL with shuffle instances has great potential in the analysis of cytopathological images.
+Background and Objective: The rapid on-site evaluation (ROSE) technique improves pancreatic cancer diagnosis by enabling immediate analysis of fast-stained cytopathological images. Automating ROSE classification could not only reduce the burden on pathologists but also broaden the application of this increasingly popular technique. However, this approach faces substantial challenges due to complex perturbations in color distribution, brightness, and contrast, which are influenced by various staining environments and devices. Additionally, the pronounced variability in cancerous patterns across samples further complicates classification, underscoring the difficulty in precisely identifying local cells and establishing their global relationships.
+
+Methods: To address these challenges, we propose an instance-aware approach that enhances the Vision Transformer with a novel shuffle instance strategy (SI-ViT). Our approach presents a shuffle step to generate bags of shuffled instances and corresponding bag-level soft-labels, allowing the model to understand relationships and distributions beyond the limited original distributions. Simultaneously, combined with an un-shuffle step, the traditional ViT can model the relationships corresponding to the sample labels. This dual-step approach helps the model to focus on inner-sample and cross-sample instance relationships, making it potent in extracting diverse image patterns and reducing complicated perturbations.
+
+Results: Compared to state-of-the-art methods, significant improvements in ROSE classification have been achieved. Aiming for interpretability, equipped with instance shuffling, SI-ViT yields precise attention regions that identifying cancer and normal cells in various scenarios. Additionally, the approach shows excellent potential in pathological image analysis through generalization validation on other datasets.
+
+Conclusions: By proposing instance relationship modeling through shuffling, we introduce a new insight in pathological image analysis. The significant improvements in ROSE classification leads to protential AI-on-site applications in pancreatic cancer diagnosis. The code and results are publicly available at https://github.
+com/sagizty/MIL-SI.
 
 
 # Method Overview
