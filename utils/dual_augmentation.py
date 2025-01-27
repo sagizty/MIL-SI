@@ -1,5 +1,5 @@
 """
-dual augmentation on both images and their masks   Script  ver： May 12th 23:20
+dual augmentation on both images and their masks   Script  ver： Jan 27th 18:20
 
 
 """
@@ -109,7 +109,7 @@ class Dual_Rotate:
             image = cv2.warpAffine(image, M, (width, height))
             mask = cv2.warpAffine(mask.astype(np.uint8), M, (width, height))
 
-        return image.astype(np.uint8), mask.astype(np.int)
+        return image.astype(np.uint8), mask.astype(int)
 
 
 def Four_step_dual_augmentation(data_augmentation_mode=0, edge_size=384):
